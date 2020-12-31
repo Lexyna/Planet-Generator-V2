@@ -1,4 +1,4 @@
-package zk.planet_generator.ui;
+package zk.planet_generator.ui.objects;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Event;

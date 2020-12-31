@@ -18,6 +18,7 @@ import zk.planet_generator.scene_objects.Cloud;
 import zk.planet_generator.scene_objects.Orbiter;
 import zk.planet_generator.scene_objects.Ring;
 import zk.planet_generator.scene_objects.Star;
+import zk.planet_generator.ui.objects.*;
 
 public class EditorUI extends GameUI {
     private Array<ObjectEditor> objectEditors;
@@ -96,7 +97,7 @@ public class EditorUI extends GameUI {
         topButtonBar.add(randomButton).pad(7);
 
         // Exit Button
-        VisTextButton exitButton = new VisTextButton("Close Editor");
+        VisTextButton exitButton = new VisTextButton("Hide Editor");
         exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -162,7 +163,7 @@ public class EditorUI extends GameUI {
         editorWindow.setSize(600, stage.getHeight());
         editorWindow.setPosition(stage.getWidth() - editorWindow.getWidth(), 0);
         editorWindow.add(objectEditor).fill().expand();
-        editorWindow.setMovable(false);
+        editorWindow.setMovable(true);
 
         stage.addActor(editorWindow);
 

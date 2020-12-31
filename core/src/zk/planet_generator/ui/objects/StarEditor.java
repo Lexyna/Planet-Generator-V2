@@ -1,4 +1,4 @@
-package zk.planet_generator.ui;
+package zk.planet_generator.ui.objects;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;

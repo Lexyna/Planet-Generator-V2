@@ -3,15 +3,12 @@ package zk.planet_generator.scene_objects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.PixmapIO;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
-import zk.planet_generator.Scene;
 
 public class Planet extends SpaceObject implements Disposable {
     private ShaderProgram planetShader;
@@ -22,20 +19,17 @@ public class Planet extends SpaceObject implements Disposable {
     private Pixmap pixmap;
     private String texture;
 
-    private Planet() {
-        this(new Sprite(), null, 0);
-    }
-
     public Planet(Sprite sprite, Pixmap pixmap, int direction) {
         super(sprite);
         this.pixmap = pixmap;
         this.direction = direction;
 
-        rotationSpeed = 1/50f;
-        radius = sprite.getWidth()/2;
+        rotationSpeed = 1 / 50f;
+        radius = sprite.getWidth() / 2;
 
-        planetShader = new ShaderProgram(Gdx.files.internal("shaders/planet.vsh"), Gdx.files.internal("shaders/planet.fsh"));
-        if(!planetShader.isCompiled()) {
+        planetShader = new ShaderProgram(Gdx.files.internal("shaders/planet.vsh"),
+                Gdx.files.internal("shaders/planet.fsh"));
+        if (!planetShader.isCompiled()) {
             Gdx.app.error("Planet Shader Error", "\n" + planetShader.getLog());
         }
     }
@@ -44,7 +38,8 @@ public class Planet extends SpaceObject implements Disposable {
     public void update(float delta) {
         time += rotationSpeed * delta;
 
-        // If the code below this comment is moved to update, it causes graphic issues with orbiting objects
+        // If the code below this comment is moved to update, it causes graphic issues
+        // with orbiting objects
         planetShader.begin();
         planetShader.setUniformf("time", direction * time);
         planetShader.end();
@@ -58,7 +53,7 @@ public class Planet extends SpaceObject implements Disposable {
     }
 
     public float getWidthAtY(float y) {
-        return (float) Math.sqrt(radius*radius - y*y);
+        return (float) Math.sqrt(radius * radius - y * y);
     }
 
     public float getMinimumCloudRadiusAtY(float y) {
@@ -87,15 +82,15 @@ public class Planet extends SpaceObject implements Disposable {
     public void write(Json json) {
         super.write(json);
         StringBuilder sb = new StringBuilder();
-        for(int x = 0; x < pixmap.getWidth(); x++) {
-            for(int y = 0; y < pixmap.getHeight(); y++) {
+        for (int x = 0; x < pixmap.getWidth(); x++) {
+            for (int y = 0; y < pixmap.getHeight(); y++) {
                 int color = pixmap.getPixel(x, y);
 
-                if(color == Color.rgba8888(47f / 255f, 86f / 255f, 118f / 255f, 1f)) {
+                if (color == Color.rgba8888(47f / 255f, 86f / 255f, 118f / 255f, 1f)) {
                     sb.append("d");
-                } else if(color == Color.rgba8888(62f / 255f, 120f / 255f, 160f / 255f, 1f)) {
+                } else if (color == Color.rgba8888(62f / 255f, 120f / 255f, 160f / 255f, 1f)) {
                     sb.append("o");
-                } else if(color == Color.rgba8888(146f / 255f, 209f / 255f, 135f / 255f, 1f)) {
+                } else if (color == Color.rgba8888(146f / 255f, 209f / 255f, 135f / 255f, 1f)) {
                     sb.append("l");
                 }
             }
@@ -108,6 +103,6 @@ public class Planet extends SpaceObject implements Disposable {
         super.read(json, jsonData);
         texture = json.readValue("texture", String.class, jsonData);
         getSprite().setSize(getSize(), getSize());
-        radius = getSprite().getWidth()/2;
+        radius = getSprite().getWidth() / 2;
     }
 }

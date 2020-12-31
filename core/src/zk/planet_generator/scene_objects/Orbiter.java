@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
-import zk.planet_generator.ColorGroup;
 import zk.planet_generator.Scene;
 
 public class Orbiter extends SpaceObject {
@@ -21,10 +20,6 @@ public class Orbiter extends SpaceObject {
     private Vector3 position;
     private Matrix3 rotZ;
     private Matrix3 rotX;
-
-    private Orbiter() {
-
-    }
 
     public Orbiter(Sprite sprite, OrbiterBlueprint blueprint) {
         this(sprite, blueprint, Color.rgba8888(Color.WHITE));
@@ -40,7 +35,7 @@ public class Orbiter extends SpaceObject {
         this.radius = blueprint.radius;
         this.yOffset = blueprint.yOffset;
 
-//        setColor(color);
+        // setColor(color);
 
         initializeMatrices();
     }
@@ -61,8 +56,9 @@ public class Orbiter extends SpaceObject {
         position.mul(rotX);
 
         // Set sprite position for 2D rendering and zCoord for ordering
-        getSprite().setPosition(Scene.CENTER_X - getSprite().getWidth()/2 + position.x, Scene.CENTER_Y - getSprite().getHeight()/2 + position.y + yOffset);
-        setZPos((int)position.z);
+        getSprite().setPosition(Scene.CENTER_X - getSprite().getWidth() / 2 + position.x,
+                Scene.CENTER_Y - getSprite().getHeight() / 2 + position.y + yOffset);
+        setZPos((int) position.z);
     }
 
     public float getAngularVelocity() {
@@ -115,7 +111,6 @@ public class Orbiter extends SpaceObject {
         public float radius;
         public float yOffset;
     }
-
 
     @Override
     public void write(Json json) {

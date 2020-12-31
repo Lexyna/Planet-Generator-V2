@@ -6,8 +6,6 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 import zk.planet_generator.ColorGroup;
 
-import java.awt.*;
-
 public class Ring implements Json.Serializable {
     private Array<Orbiter> objects;
     private ColorGroup colors;
@@ -18,10 +16,6 @@ public class Ring implements Json.Serializable {
     private float zTilt;
     private float xTilt;
     private int baseObjectCount;
-
-    private Ring() {
-
-    }
 
     public Ring(Array<Orbiter> objects) {
         this.objects = objects;
@@ -51,7 +45,7 @@ public class Ring implements Json.Serializable {
 
     public void setAngularVelocity(float vel) {
         this.angularVelocity = vel;
-        for(Orbiter ring : objects) {
+        for (Orbiter ring : objects) {
             ring.setAngularVelocity(vel);
         }
     }
@@ -62,7 +56,7 @@ public class Ring implements Json.Serializable {
 
     public void setZTilt(float tilt) {
         this.zTilt = tilt;
-        for(Orbiter ring : objects) {
+        for (Orbiter ring : objects) {
             ring.setZTilt(tilt);
         }
     }
@@ -73,13 +67,13 @@ public class Ring implements Json.Serializable {
 
     public void setXTilt(float tilt) {
         this.xTilt = tilt;
-        for(Orbiter ring : objects) {
+        for (Orbiter ring : objects) {
             ring.setXTilt(tilt);
         }
     }
 
     public void setRadius(float radius) {
-        for(Orbiter ringObj : objects) {
+        for (Orbiter ringObj : objects) {
             ringObj.setRadius(radius);
         }
     }
@@ -90,10 +84,10 @@ public class Ring implements Json.Serializable {
 
     public void setMinimumRadius(float minimumRadius) {
         this.minRadius = minimumRadius;
-        if(maxRadius < minRadius) {
+        if (maxRadius < minRadius) {
             maxRadius = minRadius + 1;
         }
-        for(Orbiter ringObj : objects) {
+        for (Orbiter ringObj : objects) {
             ringObj.setRadius(MathUtils.random(minRadius, maxRadius));
         }
     }
@@ -104,18 +98,18 @@ public class Ring implements Json.Serializable {
 
     public void setMaximumRadius(float maximumRadius) {
         this.maxRadius = maximumRadius;
-        if(minRadius > maxRadius) {
+        if (minRadius > maxRadius) {
             minRadius = maxRadius - 1;
         }
 
-        for(Orbiter ringObj : objects) {
+        for (Orbiter ringObj : objects) {
             ringObj.setRadius(MathUtils.random(minRadius, maxRadius));
         }
     }
 
     public void setColor(int index, int color) {
-        for(Orbiter ringObj : objects) {
-            if(ringObj.getColor() == colors.at(index)) {
+        for (Orbiter ringObj : objects) {
+            if (ringObj.getColor() == colors.at(index)) {
                 ringObj.setColor(color);
             }
         }

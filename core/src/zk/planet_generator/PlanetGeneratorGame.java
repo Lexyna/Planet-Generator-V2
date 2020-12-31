@@ -1,19 +1,10 @@
 package zk.planet_generator;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.JsonWriter;
 import com.kotcrab.vis.ui.VisUI;
-//import com.sun.org.apache.xpath.internal.operations.Or;
-//import org.omg.CORBA.ORB;
-import zk.planet_generator.scene_objects.*;
 import zk.planet_generator.ui.EditorUI;
 import zk.planet_generator.ui.SceneUI;
-
-import javax.swing.*;
 
 /**
  * Planet shader code:

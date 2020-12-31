@@ -102,7 +102,7 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
         objectGenerator.createMoons();
 
         rings = new Array<>();
-        while(rings.size == 0) {
+        while (rings.size == 0) {
             objectGenerator.createRings();
         }
         objectGenerator.createClouds(Color.rgba8888(245f / 255f, 245f / 255f, 213f / 255f, 1f));
@@ -111,7 +111,7 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
 
     @Override
     public boolean keyDown(int keycode) {
-        switch(keycode) {
+        switch (keycode) {
             case Input.Keys.ESCAPE:
                 Gdx.app.exit();
                 return true;
@@ -125,7 +125,7 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
     }
 
     public void update(float delta) {
-        if(shouldSpeedUpTime) {
+        if (shouldSpeedUpTime) {
             delta *= 10;
         }
 
@@ -135,7 +135,7 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
     }
 
     private void tryToTransition(float delta) {
-        if(focus) {
+        if (focus) {
             elapsed += delta;
             float progress = Math.min(1f, elapsed / lifetime);
 
@@ -145,18 +145,18 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
             starCamera.position.x = Interpolation.circleOut.apply(startStarX, targetStarX, progress);
             starCamera.update();
 
-            if(progress == 1) {
+            if (progress == 1) {
                 focus = false;
             }
         }
     }
 
     private void updateObjects(float delta) {
-        for(Trajectory trajectory : trajectories) {
+        for (Trajectory trajectory : trajectories) {
             trajectory.update();
         }
 
-        for(SpaceObject spaceObject : spaceObjects) {
+        for (SpaceObject spaceObject : spaceObjects) {
             spaceObject.update(delta);
         }
         spaceObjects.sort();
@@ -169,12 +169,12 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
 
         batch.begin();
         batch.setProjectionMatrix(starCamera.combined);
-        for(Star star : stars) {
+        for (Star star : stars) {
             star.render(batch);
         }
 
         batch.setProjectionMatrix(gameCamera.combined);
-        for(SpaceObject spaceObject : spaceObjects) {
+        for (SpaceObject spaceObject : spaceObjects) {
             spaceObject.render(batch);
         }
         batch.end();
@@ -209,7 +209,7 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
             for (int y = 0; y < generated.length; y++) {
                 double value = generated[x][y];
 
-                if(value < 0.40f) {
+                if (value < 0.40f) {
                     // Deep ocean
                     pixmap.drawPixel(x, y, Color.rgba8888(47f / 255f, 86f / 255f, 118f / 255f, 1f));
                 } else if (value < 0.55f) {
@@ -225,7 +225,7 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
     }
 
     public void clear() {
-        for(SpaceObject object : spaceObjects) {
+        for (SpaceObject object : spaceObjects) {
             object.getSprite().getTexture().dispose();
         }
         spaceObjects.clear();
@@ -237,9 +237,11 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
     }
 
     private void takeScreenshot() {
-        byte[] pixels = ScreenUtils.getFrameBufferPixels(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), true);
+        byte[] pixels = ScreenUtils.getFrameBufferPixels(0, 0, Gdx.graphics.getBackBufferWidth(),
+                Gdx.graphics.getBackBufferHeight(), true);
 
-        Pixmap pixmap = new Pixmap(Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), Pixmap.Format.RGBA8888);
+        Pixmap pixmap = new Pixmap(Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(),
+                Pixmap.Format.RGBA8888);
         BufferUtils.copy(pixels, 0, pixmap.getPixels(), pixels.length);
         PixmapIO.writePNG(Gdx.files.external("screenshot.png"), pixmap);
         Gdx.app.log("Screenshot", "Saved screenshot to screenshot.png");
@@ -380,11 +382,10 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
         loadClouds(json, jsonData);
     }
 
-
     private void loadRings(Json json, JsonValue jsonData) {
         rings = json.readValue("rings", Array.class, new Array(), jsonData);
-        for(Ring ring : rings) {
-            for(int i = 0; i < ring.getBaseObjectCount(); i++) {
+        for (Ring ring : rings) {
+            for (int i = 0; i < ring.getBaseObjectCount(); i++) {
                 objectGenerator.createObjectInRing(ring);
             }
         }
@@ -392,14 +393,14 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
 
     private void loadStars(Json json, JsonValue jsonData) {
         stars = json.readValue("stars", Array.class, new Array(), jsonData);
-        for(Star star : stars) {
+        for (Star star : stars) {
             star.getSprite().setTexture(pixelTexture);
         }
     }
 
     private void loadMoons(Json json, JsonValue jsonData) {
         Array<Orbiter> moons = json.readValue("moons", Array.class, new Array(), jsonData);
-        for(Orbiter moon : moons) {
+        for (Orbiter moon : moons) {
             moon.setSprite(objectGenerator.createMoonSprite(moon.getSize()));
             moon.setColor(moon.getColor());
             addMoon(moon);
@@ -409,8 +410,8 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
     private void loadClouds(Json json, JsonValue jsonData) {
         Array<Cloud> clouds = json.readValue("clouds", Array.class, new Array(), jsonData);
         int cloudColor = Color.rgba8888(245f / 255f, 245f / 255f, 213f / 255f, 1f);
-        for(Cloud cloud : clouds) {
-            for(int i = 0; i < cloud.getCloudObjects().size; i++) {
+        for (Cloud cloud : clouds) {
+            for (int i = 0; i < cloud.getCloudObjects().size; i++) {
                 Orbiter cloudObject = cloud.getCloudObjects().get(i);
                 cloudObject.setSprite(objectGenerator.createMoonSprite(cloudObject.getSize()));
                 cloudObject.setColor(cloudColor);
@@ -424,7 +425,7 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
 
         Pixmap loadPixmap = new Pixmap(1024, 1024, Pixmap.Format.RGBA8888);
         int index = 0;
-        for(int x = 0; x < 1024; x++) {
+        for (int x = 0; x < 1024; x++) {
             for (int y = 0; y < 1024; y++) {
                 int color = 0;
                 switch (planet.getTextureString().charAt(index)) {

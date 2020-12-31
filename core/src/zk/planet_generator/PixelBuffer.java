@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.badlogic.gdx.utils.ScreenUtils;
 
 public class PixelBuffer extends FrameBuffer {
     private TextureRegion pixelBufferRegion;
@@ -18,11 +19,13 @@ public class PixelBuffer extends FrameBuffer {
         pixelBufferRegion.flip(false, true);
     }
 
-    public void render(SpriteBatch batch, OrthographicCamera screenCamera) {
+    public Pixmap render(SpriteBatch batch, OrthographicCamera screenCamera) {
         batch.setShader(null);
         batch.setProjectionMatrix(screenCamera.combined);
         batch.begin();
         batch.draw(pixelBufferRegion, 0, 0, screenCamera.viewportWidth, screenCamera.viewportHeight);
         batch.end();
+        return ScreenUtils.getFrameBufferPixmap(0, 0, (int) screenCamera.viewportWidth,
+                (int) screenCamera.viewportHeight);
     }
 }

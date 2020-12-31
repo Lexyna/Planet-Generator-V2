@@ -31,6 +31,7 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
     private OrthographicCamera screenCamera;
     private SpriteBatch batch;
     private PixelBuffer pixelBuffer;
+    private Pixmap renderScreen;
 
     private ObjectGenerator objectGenerator;
     private Planet planet;
@@ -163,6 +164,8 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
     }
 
     private void drawObjects() {
+        if (renderScreen != null)
+            renderScreen.dispose();
         pixelBuffer.begin();
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, 1);
@@ -180,7 +183,7 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
         batch.end();
         pixelBuffer.end();
 
-        pixelBuffer.render(batch, screenCamera);
+        renderScreen = pixelBuffer.render(batch, screenCamera);
     }
 
     @Override
@@ -237,15 +240,9 @@ public class Scene extends InputAdapter implements Disposable, Json.Serializable
     }
 
     private void takeScreenshot() {
-        byte[] pixels = ScreenUtils.getFrameBufferPixels(0, 0, Gdx.graphics.getBackBufferWidth(),
-                Gdx.graphics.getBackBufferHeight(), true);
-
-        Pixmap pixmap = new Pixmap(Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(),
-                Pixmap.Format.RGBA8888);
-        BufferUtils.copy(pixels, 0, pixmap.getPixels(), pixels.length);
-        PixmapIO.writePNG(Gdx.files.external("screenshot.png"), pixmap);
+        PixmapIO.writePNG(Gdx.files.external("screenshot.png"), renderScreen);
         Gdx.app.log("Screenshot", "Saved screenshot to screenshot.png");
-        pixmap.dispose();
+        renderScreen.dispose();
     }
 
     public Planet getPlanet() {

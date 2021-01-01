@@ -3,6 +3,8 @@ package zk.planet_generator;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.utils.Json;
 import com.kotcrab.vis.ui.VisUI;
+
+import zk.planet_generator.newUI.Editor;
 import zk.planet_generator.ui.EditorUI;
 import zk.planet_generator.ui.SceneUI;
 
@@ -14,6 +16,7 @@ import zk.planet_generator.ui.SceneUI;
 public class PlanetGeneratorGame extends ApplicationAdapter {
     private Scene scene;
     private EditorUI editorUI;
+    private Editor editor;
     private SceneUI sceneUI;
     private InputMultiplexer inputMultiplexer;
 
@@ -24,11 +27,13 @@ public class PlanetGeneratorGame extends ApplicationAdapter {
         scene = new Scene();
         editorUI = new EditorUI(this);
         sceneUI = new SceneUI(this);
+        editor = new Editor(this);
 
         inputMultiplexer = new InputMultiplexer();
         inputMultiplexer.addProcessor(scene);
         inputMultiplexer.addProcessor(editorUI.getStage());
         inputMultiplexer.addProcessor(sceneUI.getStage());
+        inputMultiplexer.addProcessor(editor.getStage());
         Gdx.input.setInputProcessor(inputMultiplexer);
 
         sceneUI.hide();
@@ -41,8 +46,9 @@ public class PlanetGeneratorGame extends ApplicationAdapter {
         float delta = Gdx.graphics.getDeltaTime();
 
         scene.update(delta);
-        editorUI.render(delta);
-        sceneUI.render(delta);
+        editor.render();
+        // editorUI.render(delta);
+        // sceneUI.render(delta);
     }
 
     @Override

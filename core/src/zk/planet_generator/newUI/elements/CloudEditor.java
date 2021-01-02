@@ -1,70 +1,47 @@
 package zk.planet_generator.newUI.elements;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
-import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.VisUI;
-import com.kotcrab.vis.ui.util.TableUtils;
-import com.kotcrab.vis.ui.widget.VisLabel;
-import com.kotcrab.vis.ui.widget.VisScrollPane;
 import com.kotcrab.vis.ui.widget.VisTable;
-import com.kotcrab.vis.ui.widget.VisTextArea;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisWindow;
+import com.kotcrab.vis.ui.widget.spinner.FloatSpinnerModel;
+import com.kotcrab.vis.ui.widget.spinner.IntSpinnerModel;
 
+import zk.planet_generator.newUI.Perfabs;
+import zk.planet_generator.newUI.Editor.TreeNode;
 import zk.planet_generator.scene_objects.Cloud;
 
-public class CloudEditor extends VisWindow {
+public class CloudEditor extends ObjectEditor implements Comparable {
 
     private Cloud cloud;
-    private Table editor;
+    private IntSpinnerModel count;
+    private FloatSpinnerModel velocity;
 
-    public CloudEditor(Cloud cloud) {
-        super("Cloud", false);
-        setMovable(false);
+    public CloudEditor(String name, Cloud cloud) {
+        super(name);
 
-        TableUtils.setSpacingDefaults(this);
-        columnDefaults(0).left();
-
-        this.editor = new Table();
         this.cloud = cloud;
         initializeUI();
-        pack();
     }
 
     private void initializeUI() {
-        VisTextButton deleteBtn = new VisTextButton("Delete");
-        VisTextButton btn = new VisTextButton("BTN");
-        deleteBtn.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent e, float x, float y) {
-                System.out.println("print");
-            }
-        });
-        // this.add(deleteBtn);
-        // this.add(btn);
+        add(Perfabs.createSpinner("velocity", 0, -30, 30, null)).row();
+        add(Perfabs.createSlider("count", 0, 0, 100, 1, null)).row();
+    }
 
-        VisTable btnTable = new VisTable(true);
-        VisTable labeTable = new VisTable(true);
-        VisTable areaTable = new VisTable(true);
+    @Override
+    public void delete() {
+        this.parent.remove();
+    }
 
-        btnTable.add(deleteBtn);
-        btnTable.add(btn);
-
-        Label l = new Label("test", VisUI.getSkin());
-        TextArea are = new TextArea("text", VisUI.getSkin());
-
-        labeTable.add(l);
-        areaTable.add(are);
-
-        add(btnTable).row();
-        add(labeTable).row();
-        add(areaTable).row();
-        // this.add(new Label("test", VisUI.getSkin())).fill().expand();
-        // this.add(new VisTextArea("text")).fill().expand();
+    @Override
+    public int compareTo(Object o) {
+        // TODO Auto-generated method stub
+        return 0;
     }
 }
